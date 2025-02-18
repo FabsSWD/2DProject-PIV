@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     // Variable para controlar si está en el suelo
-    private bool isGrounded = false;
+    public bool isGrounded = false;
 
     void Start()
     {

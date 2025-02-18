@@ -2,65 +2,47 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    // Referencia al Animator y Rigidbody2D
     private Animator animator;
     private Rigidbody2D rb;
-
-    // Variable para determinar si el jugador está en el suelo.
-    public bool isGrounded = false;
+    // Referencia al script de movimiento
+    private PlayerMovement playerMovement;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        // Asumiendo que PlayerMovement está en el mismo GameObject:
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
     {
-        animator.SetBool("Grounded", isGrounded);
-
+        // Actualizamos el parámetro "Grounded" directamente desde PlayerMovement
+        animator.SetBool("Grounded", playerMovement.isGrounded);
+        // Usamos la velocidad vertical para el parámetro "airspeed"
         animator.SetFloat("airspeed", rb.velocity.y);
 
-        float horizontal = Input.GetAxis("Horizontal");
-        int animState = 0;
-
-        if (!isGrounded)
+        // Por ejemplo, para determinar el estado de animación basado en la velocidad y si está en el suelo:
+        int animState = 0;  // 0 = Idle
+        if (!playerMovement.isGrounded && rb.velocity.y < 0)
         {
-            animState = 3;
+            animState = 3;  // Jump (caída)
         }
-        else if (Mathf.Abs(horizontal) > 0.1f)
+        else if (playerMovement.isGrounded)
         {
-            animState = 2;
-        }
-        else
-        {
-            animState = 0;
+            float horizontal = Input.GetAxis("Horizontal");
+            animState = (Mathf.Abs(horizontal) > 0.1f) ? 2 : 0;  // 2 = Run, 0 = Idle
         }
         animator.SetInteger("AnimState", animState);
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        // Puedes seguir controlando los triggers de Attack, Hurt, Death, etc. según tu lógica.
+        if (Input.GetButtonDown("Jump") && playerMovement.isGrounded)
         {
             animator.SetTrigger("Jump");
         }
-
         if (Input.GetButtonDown("Fire1"))
         {
             animator.SetTrigger("Attack");
-        }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
         }
     }
 }
