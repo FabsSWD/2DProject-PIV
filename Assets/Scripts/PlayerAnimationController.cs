@@ -15,11 +15,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     void Update()
     {
-        // Actualizamos parámetros basados en el estado del movimiento
         animator.SetBool("Grounded", playerMovement.isGrounded);
-        animator.SetFloat("AirSpeed", rb.velocity.y);
 
-        // Definimos el estado de animación: 0 = Idle, 2 = Run, 3 = Jump
+        // 0 = Idle, 2 = Run, 3 = Jump
         int animState = 0;
         if (!playerMovement.isGrounded)
         {
@@ -32,7 +30,5 @@ public class PlayerAnimationController : MonoBehaviour
         }
         animator.SetInteger("AnimState", animState);
 
-        // Si lo deseas, podrías actualizar aquí otros parámetros (por ejemplo, AttackSpeed) 
-        // en caso de no hacerlo desde PlayerMovement.
     }
 }

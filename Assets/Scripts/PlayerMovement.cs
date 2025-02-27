@@ -5,9 +5,9 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
     public float jumpReleaseMultiplier = 0.5f;
-
-    public float attackSpeed = 1f;
     public bool isAttacking = false;
+
+    
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -28,13 +28,6 @@ public class PlayerMovement : MonoBehaviour
         if (isAttacking)
         {
             rb.velocity = Vector2.zero;
-            return;
-        }
-
-        // Attack
-        if (Input.GetButtonDown("Fire1") && isGrounded && !isAttacking)
-        {
-            StartAttack();
             return;
         }
 
@@ -63,18 +56,6 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = true;
         else if (moveInput < 0)
             spriteRenderer.flipX = false;
-    }
-
-    void StartAttack()
-    {
-        isAttacking = true;
-        animator.SetFloat("AttackSpeed", 1f / attackSpeed);
-        animator.SetTrigger("Attack");
-    }
-
-    public void OnAttackAnimationEnd()
-    {
-        isAttacking = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
