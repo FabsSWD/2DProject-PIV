@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour
     
     public float attackSpeed = 1f;
     public float attackRange = 0.5f;
+    public int attackDamage = 25;
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
@@ -45,7 +46,7 @@ public class PlayerCombat : MonoBehaviour
         
         foreach(Collider2D enemy in hitEnemies)
         {
-            Debug.Log("Hitted " + enemy.name);
+            enemy.GetComponent<DefaultEnemy>().TakeDamage(attackDamage);
         }        
     }
 
