@@ -1,46 +1,53 @@
 using UnityEngine;
-using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
-    
+
     public float attackSpeed = 1f;
     public bool isAttacking = false;
-    
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
-    
+    private Animator animator;
+
     public bool isGrounded = false;
-    
-    private const float baseAttackDuration = 0.7f;
-    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
-    
+
     void Update()
     {
-        if(isAttacking)
+        // Attack Lock
+        if (isAttacking)
         {
             rb.velocity = Vector2.zero;
             return;
         }
-        
-        if(Input.GetButtonDown("Fire1") && isGrounded && !isAttacking)
+
+        // Attack
+        if (Input.GetButtonDown("Fire1") && isGrounded && !isAttacking)
         {
-            isAttacking = true;
-            StartCoroutine(AttackRoutine());
+            StartAttack();
             return;
         }
-        
+
+        // Jump
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            animator.SetTrigger("Jump");
+        }
+
+        // Horizontal Movement
         HandleMovement();
-        HandleJump();
     }
-    
+
     void HandleMovement()
     {
         float moveInput = Input.GetAxis("Horizontal");
@@ -51,35 +58,25 @@ public class PlayerMovement : MonoBehaviour
         else if (moveInput < 0)
             spriteRenderer.flipX = false;
     }
-    
-    void HandleJump()
-    {
-        if(Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
-    }
-    
-    IEnumerator AttackRoutine()
-    {
-        Animator animator = GetComponent<Animator>();
-        float multiplier = baseAttackDuration * attackSpeed;
-        float timeout = multiplier - (multiplier * 0.005f);
 
-        animator.SetFloat("AttackSpeed", multiplier);
+    void StartAttack()
+    {
+        isAttacking = true;
+        animator.SetFloat("AttackSpeed", 1f / attackSpeed);
         animator.SetTrigger("Attack");
+    }
 
-        yield return new WaitForSeconds(timeout);
-        
+    public void OnAttackAnimationEnd()
+    {
         isAttacking = false;
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
     }
-    
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))

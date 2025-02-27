@@ -1853,8 +1853,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 5
+  attackSpeed: 0.5
+  isAttacking: 0
   isGrounded: 1
-  airspeed: 0
 --- !u!114 &1970027642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1880,7 +1881,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: b95265f99b6d90e438df1308a89c8bab, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
