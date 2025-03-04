@@ -6,16 +6,24 @@ public class DefaultEnemy : MonoBehaviour
 {
     public int maxHealth = 100;
     int currentHealth;
+
+    private Animator animator;
+    private Rigidbody2D rb;
+    private Collider2D collider2D;
+
     void Start()
     {
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        collider2D = GetComponent<Collider2D>();
+
         currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
-        // Play hurt anim
+        animator.SetTrigger("Hurt");
 
         if (currentHealth <= 0)
         {
@@ -26,7 +34,11 @@ public class DefaultEnemy : MonoBehaviour
     void Die()
     {
         Debug.Log("An Enemy was slain! ");
-        // Play death anim
-        // Disable enemy
+        
+        animator.SetTrigger("Death");
+        rb.velocity = Vector2.zero;
+        collider2D.enabled = false;
+        
+        this.enabled = false;
     }
 }

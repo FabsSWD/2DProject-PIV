@@ -6,14 +6,15 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public float jumpReleaseMultiplier = 0.5f;
     public bool isAttacking = false;
+    public bool isGrounded = false;
 
+    private int jumpCount = 0;
+    public int maxJumps = 2;
     
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-
-    public bool isGrounded = false;
 
     void Start()
     {
@@ -32,10 +33,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Jump
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
+            jumpCount++;
         }
         // Better Jump
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
@@ -53,15 +55,17 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
         if (moveInput > 0)
-            spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
         else if (moveInput < 0)
-            spriteRenderer.flipX = false;
+            transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground")){
             isGrounded = true;
+            jumpCount = 0;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
