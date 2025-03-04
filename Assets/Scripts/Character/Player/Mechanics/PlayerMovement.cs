@@ -8,7 +8,7 @@ public class PlayerMovement : CharacterMovement
     public int maxJumps = 2;
 
     private int jumpCount = 0;
-    
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
