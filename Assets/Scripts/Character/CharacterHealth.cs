@@ -25,6 +25,7 @@ public class CharacterHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            
             Die();
         }
     }

@@ -47,7 +47,8 @@ GameObject:
   - component: {fileID: 5026615200310796689}
   - component: {fileID: 5026615200310796688}
   - component: {fileID: 5026615200310796695}
-  - component: {fileID: 5026615200310796690}
+  - component: {fileID: 3770671236637888616}
+  - component: {fileID: 2709617627955785599}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -247,11 +248,12 @@ MonoBehaviour:
   updateRate: 2
   speed: 5
   nextWaypointDistance: 3
+  stopDistance: 1.5
   jumpForce: 5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &5026615200310796690
+--- !u!114 &3770671236637888616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -260,7 +262,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 5026615200310796681}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81f4c14133be2c847a549ac30d8185ff, type: 3}
+  m_Script: {fileID: 11500000, guid: f75e0bb99e9396a47ad983f1153f5377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  coinDrop: {fileID: 0}
+--- !u!114 &2709617627955785599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5026615200310796681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 719ffde8bc595f54e906bb492de3e734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 294021516948677814, guid: 49e6ee33250214a9facc214f3a2fecb7, type: 3}
+  dropForce: 2
