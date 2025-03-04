@@ -34,8 +34,19 @@ public class CharacterHealth : MonoBehaviour
         Debug.Log(gameObject.name + " was slain!");
         animator.SetTrigger("Death");
         rb.velocity = Vector2.zero;
+        
+        rb.bodyType = RigidbodyType2D.Static;
         if(collider2D != null)
             collider2D.enabled = false;
+        
+        var movement = GetComponent<CharacterMovement>();
+        if (movement != null)
+            movement.enabled = false;
+        
+        var combat = GetComponent<CharacterCombat>();
+        if (combat != null)
+            combat.enabled = false;
+        
         this.enabled = false;
     }
 }
