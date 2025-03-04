@@ -8,7 +8,7 @@ public class CharacterHealth : MonoBehaviour
     
     protected Animator animator;
     protected Rigidbody2D rb;
-    protected Collider2D collider2D;
+    protected new Collider2D collider2D;
 
     void Awake()
     {

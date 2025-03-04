@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CharacterCombat : MonoBehaviour
 {
@@ -22,12 +23,18 @@ public class CharacterCombat : MonoBehaviour
 
     public virtual void Attack()
     {
-        // Check if character is not already attacking
         if (characterMovement != null && characterMovement.isAttacking)
             return;
         characterMovement.isAttacking = true;
         animator.SetFloat("AttackSpeed", 1f / attackSpeed);
         animator.SetTrigger("Attack");
+        StartCoroutine(ResetAttackAfterDelay(attackSpeed));
+    }
+
+    private IEnumerator ResetAttackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        OnAttackAnimationEnd();
     }
 
     public virtual void OnAttackAnimationEnd()
@@ -38,14 +45,19 @@ public class CharacterCombat : MonoBehaviour
 
     public virtual void OnCastedHit()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        foreach (Collider2D enemy in hitEnemies)
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        foreach (Collider2D target in hitTargets)
         {
-            CharacterHealth enemyHealth = enemy.GetComponent<CharacterHealth>();
-            if (enemyHealth != null)
+            Debug.Log("Detected target: " + target.name);
+            CharacterHealth health = target.GetComponentInParent<CharacterHealth>();
+            if (health != null)
             {
-                enemyHealth.TakeDamage(attackDamage);
+                Debug.Log("Applying damage to: " + target.name);
+                health.TakeDamage(attackDamage);
+            }
+            else
+            {
+                Debug.Log("No CharacterHealth found on: " + target.name);
             }
         }
     }
