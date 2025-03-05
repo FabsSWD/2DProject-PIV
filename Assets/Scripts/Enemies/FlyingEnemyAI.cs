@@ -1,38 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class BatAI : MonoBehaviour
+public class FlyingEnemyAI : MonoBehaviour
 {
     public Transform target;
     public float moveSpeed = 5f;
     public float nextWaypointDistance = 3f;
+    
+    protected Transform enemyGFX;
+    
+    protected Path path;
+    protected int currentWaypoint = 0;
+    protected bool reachedEndOfPath = false;
 
-    public Transform batGFX;
+    protected Seeker seeker;
+    protected Rigidbody2D rb;
 
-    Path path;
-    int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
-
-    Seeker seeker;
-    Rigidbody2D rb;
-
-    void Start()
+    protected virtual void Start()
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
-
-        InvokeRepeating("UpdatePath", 0f, 0.5f);
+        
+        if (enemyGFX == null)
+            enemyGFX = transform;
+        
+        InvokeRepeating(nameof(UpdatePath), 0f, 0.5f);
     }
 
-    void UpdatePath()
+    protected virtual void UpdatePath()
     {
         if (seeker.IsDone())
             seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
-    void OnPathComplete(Path p)
+    protected virtual void OnPathComplete(Path p)
     {
         if (!p.error)
         {
@@ -41,7 +42,7 @@ public class BatAI : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (path == null)
             return;
@@ -57,8 +58,7 @@ public class BatAI : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * moveSpeed * Time.deltaTime;
-
+        Vector2 force = moveSpeed * Time.deltaTime * direction;
         rb.AddForce(force);
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
@@ -67,13 +67,9 @@ public class BatAI : MonoBehaviour
             currentWaypoint++;
         }
 
-        if(force.x >= 0.01f)
-        {
-            batGFX.localScale = new Vector3(4f, 4f, 1f);
-        }
-        else if(force.x <= -0.01f)
-        {
-            batGFX.localScale = new Vector3(4f, 4f, 1f);
-        }
+        if (force.x >= 0.01f)
+            enemyGFX.localScale = new Vector3(1, 1, 1);
+        else if (force.x <= -0.01f)
+            enemyGFX.localScale = new Vector3(-1, 1, 1);
     }
 }

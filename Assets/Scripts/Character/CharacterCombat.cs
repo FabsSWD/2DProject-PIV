@@ -49,7 +49,7 @@ public class CharacterCombat : MonoBehaviour
         foreach (Collider2D target in hitTargets)
         {
             Debug.Log("Detected target: " + target.name);
-            CharacterHealth health = target.GetComponentInParent<CharacterHealth>();
+            EnemyHealth health = target.GetComponentInParent<EnemyHealth>();
             if (health != null)
             {
                 Debug.Log("Applying damage to: " + target.name);
