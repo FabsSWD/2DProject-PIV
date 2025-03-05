@@ -8,10 +8,10 @@ public class EnemyMovement : CharacterMovement
     public Transform target;
     public float updateRate = 2f;
     private Seeker seeker;
-    private Path path;
+    public Path path;
     public float speed = 5f;               
     public float nextWaypointDistance = 3f;
-    private int currentWaypoint = 0;
+    public int currentWaypoint = 0;
     public float stopDistance = 1.5f;
 
     [Header("Jump")]
