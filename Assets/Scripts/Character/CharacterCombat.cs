@@ -31,7 +31,7 @@ public class CharacterCombat : MonoBehaviour
         StartCoroutine(ResetAttackAfterDelay(attackSpeed));
     }
 
-    private IEnumerator ResetAttackAfterDelay(float delay)
+    public IEnumerator ResetAttackAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         OnAttackAnimationEnd();
