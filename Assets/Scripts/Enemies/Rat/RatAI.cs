@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RatAI : GroundEnemyAI
 {
-    public float scurrySpeedMultiplier = 1.2f; // Increases speed for quick movement
+    public float scurrySpeedMultiplier = 1.2f;
     public bool canJumpOverObstacles = false;
     public float jumpForce = 5f;
 

@@ -12,8 +12,10 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private EnemyCoinDrop coinDrop;
     protected SpriteRenderer spriteRenderer;
     protected Color originalColor;
-
+    
     private WaveManager waveManager;
+    protected bool isDead = false;
+    public bool isInvulnerable = false;
 
     protected virtual void Awake()
     {
@@ -30,6 +32,9 @@ public class EnemyHealth : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        if (isInvulnerable || isDead)
+            return;
+            
         currentHealth -= damage;
         if (animator != null)
             animator.SetTrigger("Hurt");
@@ -38,7 +43,10 @@ public class EnemyHealth : MonoBehaviour
             StartCoroutine(FlashRed());
 
         if (currentHealth <= 0)
+        {
+            isInvulnerable = true;
             Die();
+        }
     }
 
     protected IEnumerator FlashRed()
@@ -50,17 +58,21 @@ public class EnemyHealth : MonoBehaviour
 
     protected virtual void Die()
     {
+        if (isDead)
+            return;
+        isDead = true;
+        
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
+        }
+        
         if (animator != null)
             animator.SetTrigger("Death");
-        
-        if (waveManager != null)
-            waveManager.OnEnemyKilled();
-        Destroy(gameObject);
-        
+
         rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Static;
-        if (collider2D != null)
-            collider2D.enabled = false;
         
         EnemyCombat combat = GetComponent<EnemyCombat>();
         if (combat != null)
@@ -70,9 +82,16 @@ public class EnemyHealth : MonoBehaviour
         if (flyingAI != null)
             flyingAI.enabled = false;
         
+        GroundEnemyAI groundEnemyAI = GetComponent<GroundEnemyAI>();
+        if (groundEnemyAI != null)
+            groundEnemyAI.enabled = false;
+        
         if (coinDrop != null)
             coinDrop.DropCoins(transform);
         
+        if (waveManager != null)
+            waveManager.OnEnemyKilled();
+
         Destroy(gameObject, 1f);
     }
 

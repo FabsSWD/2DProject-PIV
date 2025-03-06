@@ -1,23 +1,27 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour {
-    [Header("Configuración de oleadas")]
+    [Header("Wave Config")]
     public int totalWaves = 5;
     public int initialEnemyCount = 3;
     public int enemyIncrementPerWave = 2;
     public float preparationTime = 10f;
 
-    [Header("Estado de la oleada")]
+    [Header("Wave Status")]
     public int currentWave = 0;
     private int enemiesToSpawn;
-    private int enemiesRemaining;
+    public int enemiesRemaining;
+    private EnemySystem enemySystem;
 
     public bool WaveActive {
         get { return enemiesRemaining > 0; }
     }
 
     void Start() {
+        enemySystem = FindObjectOfType<EnemySystem>();
         StartCoroutine(PrepareAndStartNextWave());
     }
 
@@ -27,8 +31,9 @@ public class WaveManager : MonoBehaviour {
         currentWave++;
         enemiesToSpawn = initialEnemyCount + (currentWave - 1) * enemyIncrementPerWave;
         enemiesRemaining = enemiesToSpawn;
+        enemySystem.EnemyUpdate();
 
-        Debug.Log("Oleada " + currentWave + " iniciada. Enemigos a spawnear: " + enemiesToSpawn);
+        Debug.Log("Wave " + currentWave + " started. Enemies this round: " + enemiesToSpawn);
     }
 
     public bool CanSpawnEnemy() {
@@ -42,14 +47,15 @@ public class WaveManager : MonoBehaviour {
 
     public void OnEnemyKilled() {
         enemiesRemaining--;
-        Debug.Log("Enemigo muerto. Restantes en la oleada: " + enemiesRemaining);
+        Debug.Log("Enemies Remaining: " + enemiesRemaining);
+        enemySystem.EnemyUpdate();
 
         if (enemiesRemaining <= 0) {
-            Debug.Log("Oleada " + currentWave + " completada.");
+            Debug.Log("Wave " + currentWave + " completed.");
             if (currentWave < totalWaves) {
                 StartCoroutine(PrepareAndStartNextWave());
             } else {
-                Debug.Log("¡Todas las oleadas completadas!");
+                Debug.Log("All waves cleared!");
             }
         }
     }

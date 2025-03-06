@@ -12,6 +12,11 @@ public class LevelDoor : MonoBehaviour
     private PlayerInventory playerInventory;
     private bool playerInside = false;
 
+    void Start()
+    {
+        textBackground.SetActive(false);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3bfc71fb2a637a4c8650b1b77cb32c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 75
+  maxHealth: 50
   coinDrop: {fileID: 3565799468766173956}
 --- !u!58 &3565799468766173958
 CircleCollider2D:
