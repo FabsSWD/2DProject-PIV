@@ -37,6 +37,15 @@ public class CharacterCombat : MonoBehaviour
         StartCoroutine(ResetAttackAfterDelay(attackSpeed));
     }
 
+    public void AddAttackDamage(int bonus)
+    {
+        attackDamage += bonus;
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.attackDamage = attackDamage;
+        }
+    }
+
     public IEnumerator ResetAttackAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);

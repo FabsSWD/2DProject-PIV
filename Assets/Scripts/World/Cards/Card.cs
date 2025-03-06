@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public enum CardRarity { Common, Rare, Epic }
 public enum CommonBonus { LifePlus5, SpeedMinus0_1, Heal20Percent }
-public enum RareBonus { JumpPlus1, MaxLifePlus50Percent, HealingMultiplierPlus100, AttackDamagePlus5 }
+public enum RareBonus { JumpPlus1, MaxLifePlus50Percent, AttackDamagePlus5 }
 public enum EpicBonus { Shield, SummonPrefab }
 
 public class Card : MonoBehaviour
@@ -16,6 +16,21 @@ public class Card : MonoBehaviour
     public GameObject rarityIcon;
     public TMP_Text bonusText;
     private CardSelectionManager selectionManager;
+
+    private CharacterCombat characterCombat;
+    private PlayerMovement playerMovement;
+    private CharacterHealth characterHealth;
+    private PlayerInventory playerInventory;
+    private SecondaryAbilityManager secondaryAbility;
+
+    void Start()
+    {
+        characterCombat = FindObjectOfType<CharacterCombat>();
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        characterHealth = FindObjectOfType<CharacterHealth>();
+        playerInventory = FindObjectOfType<PlayerInventory>();
+        secondaryAbility = FindObjectOfType<SecondaryAbilityManager>();    
+    }
 
     public void SetupFromData(CardSelectionManager manager, CardRarity cardRarity, int bonusIndex)
     {
@@ -73,7 +88,6 @@ public class Card : MonoBehaviour
         {
             case RareBonus.JumpPlus1: return "+1 Jump";
             case RareBonus.MaxLifePlus50Percent: return "+50% Max Life";
-            case RareBonus.HealingMultiplierPlus100: return "Double Healing";
             case RareBonus.AttackDamagePlus5: return "+5 Attack Damage";
         }
         return "";
@@ -91,20 +105,17 @@ public class Card : MonoBehaviour
 
     public void AcceptCard()
     {
-        if(GameManager.Instance != null)
+        switch(rarity)
         {
-            switch(rarity)
-            {
-                case CardRarity.Common:
-                    ApplyCommonBonus();
-                    break;
-                case CardRarity.Rare:
-                    ApplyRareBonus();
-                    break;
-                case CardRarity.Epic:
-                    ApplyEpicBonus();
-                    break;
-            }
+            case CardRarity.Common:
+                ApplyCommonBonus();
+                break;
+            case CardRarity.Rare:
+                ApplyRareBonus();
+                break;
+            case CardRarity.Epic:
+                ApplyEpicBonus();
+                break;
         }
         selectionManager.CardSelected(this);
         Destroy(gameObject);
@@ -115,14 +126,19 @@ public class Card : MonoBehaviour
         switch(commonBonus)
         {
             case CommonBonus.LifePlus5:
-                GameManager.Instance.currentHealth = Mathf.Min(GameManager.Instance.currentHealth + 5, GameManager.Instance.maxHealth);
+                if(characterHealth != null)
+                    characterHealth.AddHealth(5);
                 break;
             case CommonBonus.SpeedMinus0_1:
-                GameManager.Instance.moveSpeed -= 0.1f;
+                if(playerMovement != null)
+                    playerMovement.ModifyMoveSpeed(-0.1f);
                 break;
             case CommonBonus.Heal20Percent:
-                int healAmount = Mathf.RoundToInt(GameManager.Instance.maxHealth * 0.2f);
-                GameManager.Instance.currentHealth = Mathf.Min(GameManager.Instance.currentHealth + healAmount, GameManager.Instance.maxHealth);
+                if(characterHealth != null)
+                {
+                    int healAmount = Mathf.RoundToInt(characterHealth.maxHealth * 0.2f);
+                    characterHealth.AddHealth(healAmount);
+                }
                 break;
         }
     }
@@ -132,18 +148,19 @@ public class Card : MonoBehaviour
         switch(rareBonus)
         {
             case RareBonus.JumpPlus1:
-                GameManager.Instance.maxJumps += 1;
+                if(playerMovement != null)
+                    playerMovement.AddMaxJumps(1);
                 break;
             case RareBonus.MaxLifePlus50Percent:
-                int extra = Mathf.RoundToInt(GameManager.Instance.maxHealth * 0.5f);
-                GameManager.Instance.maxHealth += extra;
-                GameManager.Instance.currentHealth = Mathf.Min(GameManager.Instance.currentHealth + extra, GameManager.Instance.maxHealth);
-                break;
-            case RareBonus.HealingMultiplierPlus100:
-                GameManager.Instance.healingMultiplier *= 2f;
+                if(characterHealth != null)
+                {
+                    int extra = Mathf.RoundToInt(characterHealth.maxHealth * 0.5f);
+                    characterHealth.IncreaseMaxHealth(extra);
+                }
                 break;
             case RareBonus.AttackDamagePlus5:
-                GameManager.Instance.attackDamage += 5;
+                if(characterCombat != null)
+                    characterCombat.AddAttackDamage(5);
                 break;
         }
     }
@@ -153,10 +170,12 @@ public class Card : MonoBehaviour
         switch(epicBonus)
         {
             case EpicBonus.Shield:
-                GameManager.Instance.ability = SecondaryAbility.Shield;
+                if(secondaryAbility != null)
+                    secondaryAbility.SetAbility(SecondaryAbilityManager.SecondaryAbility.Shield);
                 break;
             case EpicBonus.SummonPrefab:
-                GameManager.Instance.ability = SecondaryAbility.SummonPrefab;
+                if(secondaryAbility != null)
+                    secondaryAbility.SetAbility(SecondaryAbilityManager.SecondaryAbility.SummonPrefab);
                 break;
         }
     }

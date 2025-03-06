@@ -73,16 +73,6 @@ public class CardSelectionManager : MonoBehaviour
             if(card != null && card != selectedCard)
                 Destroy(card.gameObject);
         }
-        Invoke("LoadNextLevel", 1f);
-    }
-
-    void LoadNextLevel()
-    {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        int levelNumber;
-        if(int.TryParse(currentSceneName.Replace("LevelUp", ""), out levelNumber))
-            SceneManager.LoadScene("Level" + (levelNumber + 1));
-        else
-            Debug.LogWarning("Scene name format invalid.");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

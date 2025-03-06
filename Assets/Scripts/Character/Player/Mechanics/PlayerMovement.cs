@@ -94,6 +94,24 @@ public class PlayerMovement : CharacterMovement
             transform.localScale = new Vector3(1, 1, 1);
     }
 
+    public void ModifyMoveSpeed(float amount)
+    {
+        moveSpeed += amount;
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.moveSpeed = moveSpeed;
+        }
+    }
+
+    public void AddMaxJumps(int bonus)
+    {
+        maxJumps += bonus;
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.maxJumps = maxJumps;
+        }
+    }
+
     IEnumerator Dash()
     {
         isDashing = true;

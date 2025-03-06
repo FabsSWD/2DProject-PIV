@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public int maxJumps = 2;
     public int attackDamage = 10;
     public float healingMultiplier = 1f;
-    public SecondaryAbility ability = SecondaryAbility.None;
+    public SecondaryAbilityManager.SecondaryAbility ability = SecondaryAbilityManager.SecondaryAbility.None;
 
     void Awake()
     {
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.maxJumps = 2;
             GameManager.Instance.attackDamage = 10;
             GameManager.Instance.healingMultiplier = 1f;
-            GameManager.Instance.ability = SecondaryAbility.None;
+            GameManager.Instance.ability = SecondaryAbilityManager.SecondaryAbility.None;
         }
     }
 }

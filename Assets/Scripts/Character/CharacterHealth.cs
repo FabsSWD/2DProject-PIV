@@ -49,6 +49,26 @@ public class CharacterHealth : MonoBehaviour
         GameManager.Instance.currentHealth = currentHealth;
     }
 
+    public void AddHealth(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.currentHealth = currentHealth;
+        }
+    }
+
+    public void IncreaseMaxHealth(int extra)
+    {
+        maxHealth += extra;
+        currentHealth = Mathf.Min(currentHealth + extra, maxHealth);
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.maxHealth = maxHealth;
+            GameManager.Instance.currentHealth = currentHealth;
+        }
+    }
+
     public void ApplyGameManagerValues()
     {
         if (GameManager.Instance != null)

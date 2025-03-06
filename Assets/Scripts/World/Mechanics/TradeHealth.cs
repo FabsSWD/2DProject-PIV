@@ -13,9 +13,7 @@ public class TradeHealth : MonoBehaviour
     public int minLifeOrbs = 1;
     public int maxLifeOrbs = 3;
     
-    public int healthToTrade = 10; 
-    public int minGoldRewardForHealth = 1;
-    public int maxGoldRewardForHealth = 5;
+    public int healthToTrade = 10;
     private int currentGoldReward = 0;
     public GameObject coinPrefab;
     public int minCoinDrops = 3;
@@ -42,7 +40,7 @@ public class TradeHealth : MonoBehaviour
             playerInside = true; 
             if(tradeType == TradeType.HealthForGold)
             {
-                currentGoldReward = Random.Range(minGoldRewardForHealth, maxGoldRewardForHealth + 1);
+                currentGoldReward = Random.Range(minCoinDrops, maxCoinDrops + 1);
             }
             UpdateTradeMessage();
             if(tradeMessageText != null)
@@ -73,7 +71,7 @@ public class TradeHealth : MonoBehaviour
             }
             else if(tradeType == TradeType.HealthForGold)
             {
-                tradeMessageText.text = "Press Submit to trade " + healthToTrade + " health for " + currentGoldReward + " gold.";
+                tradeMessageText.text = "Press Submit to trade " + healthToTrade + " health for gold.";
             }
         }
     }
@@ -104,11 +102,11 @@ public class TradeHealth : MonoBehaviour
                         {
                             Instantiate(lifeOrbPrefab, dropPoint.position, Quaternion.identity);
                         }
-                        StartCoroutine(ShowMessage("Trade successful: " + goldToTrade + " gold exchanged for " + orbCount + " health orbs."));
+                        StartCoroutine(ShowMessage(goldToTrade + " gold exchanged for " + orbCount + " health orbs."));
                     }
                     else
                     {
-                        StartCoroutine(ShowMessage("Trade failed: Unable to spend gold."));
+                        StartCoroutine(ShowMessage("Unable to spend gold."));
                     }
                 }
                 else
@@ -126,7 +124,7 @@ public class TradeHealth : MonoBehaviour
                     {
                         Instantiate(coinPrefab, dropPoint.position, Quaternion.identity);
                     }
-                    StartCoroutine(ShowMessage("Trade successful: " + healthToTrade + " health traded for " + currentGoldReward + " gold and " + coinDropCount + " coin drops."));
+                    StartCoroutine(ShowMessage(healthToTrade + " health traded for " + currentGoldReward + " gold and " + coinDropCount + " coin drops."));
                     healthSystem.UpdateGraphics();
                 }
                 else

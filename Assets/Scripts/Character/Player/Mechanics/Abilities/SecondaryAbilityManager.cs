@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public enum SecondaryAbility { None, Shield, SummonPrefab }
-
 public class SecondaryAbilityManager : MonoBehaviour
 {
+    public enum SecondaryAbility { None, Shield, SummonPrefab }
     public SecondaryAbility ability = SecondaryAbility.None;
     
     [Header("Shield Settings")]
@@ -46,11 +45,18 @@ public class SecondaryAbilityManager : MonoBehaviour
             ability = GameManager.Instance.ability;
         }
     }
-
+    
+    public void SetAbility(SecondaryAbility newAbility)
+    {
+        ability = newAbility;
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.ability = newAbility;
+        }
+    }
 
     void Update()
-    {
-        GameManager.Instance.ability = ability;
+    {       
         if (currentShieldCooldown > 0)
             currentShieldCooldown -= Time.deltaTime;
         if (Input.GetButtonDown("Fire2"))

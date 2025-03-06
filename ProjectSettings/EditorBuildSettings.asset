@@ -12,6 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Persistant/PersistentScene.unity
     guid: e8ffb8c8a479fda4a9a3d1a8943c8cc3
   - enabled: 1
+    path: Assets/Scenes/Levels/LevelUpLevels/LevelUp0.unity
+    guid: 6bd43fdc7300b734ca02216544c89af6
+  - enabled: 1
     path: Assets/Scenes/Levels/Level1.unity
     guid: 919bb79bb2d97b7488a9f5dabc2c6e7e
+  - enabled: 1
+    path: Assets/Scenes/Levels/LevelUpLevels/LevelUp1.unity
+    guid: 70d8669291eab2d4380a2c1d490f81c7
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level2.unity
+    guid: 560314ff1573f85489374cb8590a29a1
   m_configObjects: {}
