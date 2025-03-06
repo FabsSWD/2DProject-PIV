@@ -13,4 +13,15 @@ public class PlayerInventory : MonoBehaviour
         if(coinSystem != null)
             coinSystem.CoinUpdate();
     }
+    public bool SpendCoins(int amount)
+    {
+        if(coins >= amount)
+        {
+            coins -= amount;
+            if(coinSystem != null)
+                coinSystem.CoinUpdate();
+            return true;
+        }
+        return false;
+    }
 }
