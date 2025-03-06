@@ -2099,10 +2099,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 6904732931407173899, guid: f8a42df3c9d10624e967445edc0bc9aa, type: 3}
-      propertyPath: attackDamage
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 6904732931407173903, guid: f8a42df3c9d10624e967445edc0bc9aa, type: 3}
       propertyPath: m_RootOrder
       value: 1

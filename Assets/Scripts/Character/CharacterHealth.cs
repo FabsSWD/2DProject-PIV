@@ -8,7 +8,7 @@ public class CharacterHealth : MonoBehaviour
     protected int currentHealth;
     
     public float damageCooldown = 0.75f;
-    protected bool isInvulnerable = false;
+    public bool isInvulnerable = false;
     
     protected Animator animator;
     protected Rigidbody2D rb;
