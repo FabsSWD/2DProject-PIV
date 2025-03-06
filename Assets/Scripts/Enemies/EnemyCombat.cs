@@ -3,61 +3,39 @@ using System.Collections;
 
 public class EnemyCombat : MonoBehaviour
 {
-    [Header("Combat")]
-    public float attackSpeed = 1f;
-    public float attackRange = 0.5f;
     public int attackDamage = 10;
-    public Transform attackPoint;
-    public LayerMask playerLayer;
+    public float attackCooldown = 1.5f;
+    private bool canAttack = true;
 
-    protected Animator animator;
-    protected Rigidbody2D rb;
-    public bool isAttacking = false;
-
-    protected virtual void Awake()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        animator = GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-    }
-
-    public virtual void Attack()
-    {
-        if (isAttacking)
-            return;
-        
-        isAttacking = true;
-        animator.SetFloat("AttackSpeed", 1f / attackSpeed);
-        animator.SetTrigger("Attack");
-        StartCoroutine(ResetAttackAfterDelay(attackSpeed));
-    }
-
-    protected IEnumerator ResetAttackAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        OnAttackAnimationEnd();
-    }
-
-    public virtual void OnAttackAnimationEnd()
-    {
-        isAttacking = false;
-    }
-
-    public virtual void OnCastedHit()
-    {
-        Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayer);
-        foreach (Collider2D player in hitPlayers)
+        if (other.CompareTag("Player") && canAttack)
         {
-            CharacterHealth health = player.GetComponentInParent<CharacterHealth>();
-            if (health != null)
-            {
-                health.TakeDamage(attackDamage);
-            }
+            Attack(other);
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (attackPoint != null)
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        if (other.CompareTag("Player") && canAttack)
+        {
+            Attack(other);
+        }
+    }
+
+    private void Attack(Collider2D playerCollider)
+    {
+        CharacterHealth playerHealth = playerCollider.GetComponentInParent<CharacterHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(attackDamage);
+            canAttack = false;
+            Invoke(nameof(ResetAttack), attackCooldown);
+        }
+    }
+
+    private void ResetAttack()
+    {
+        canAttack = true;
     }
 }

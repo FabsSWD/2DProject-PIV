@@ -5,7 +5,7 @@ public class CharacterHealth : MonoBehaviour
 {
     [Header("Health")]
     public int maxHealth = 100;
-    protected int currentHealth;
+    public int currentHealth;
     
     public float damageCooldown = 0.75f;
     public bool isInvulnerable = false;
@@ -13,6 +13,7 @@ public class CharacterHealth : MonoBehaviour
     protected Animator animator;
     protected Rigidbody2D rb;
     protected new Collider2D collider2D;
+    protected HealthSystem healthSystem;
 
     void Awake()
     {
@@ -20,6 +21,15 @@ public class CharacterHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
         currentHealth = maxHealth;
+
+        healthSystem = FindObjectOfType<HealthSystem>();
+        if (healthSystem == null)
+        {
+            if (HealthSystem.Instance != null)
+            {
+                healthSystem = HealthSystem.Instance;
+            }
+        }
     }
 
     public virtual void TakeDamage(int damage)
@@ -28,7 +38,11 @@ public class CharacterHealth : MonoBehaviour
             return;
 
         currentHealth -= damage;
-        animator.SetTrigger("Hurt");
+        if (animator != null)
+            animator.SetTrigger("Hurt");
+
+        if (healthSystem != null)
+            healthSystem.UpdateGraphics();
 
         if (currentHealth <= 0)
         {
@@ -50,7 +64,8 @@ public class CharacterHealth : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log(gameObject.name + " was slain!");
-        animator.SetTrigger("Death");
+        if (animator != null)
+            animator.SetTrigger("Death");
         rb.velocity = Vector2.zero;
         
         rb.bodyType = RigidbodyType2D.Static;

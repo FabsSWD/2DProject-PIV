@@ -14,5 +14,16 @@ public class InstantKillZone : MonoBehaviour
         {
             health.TakeDamage(health.maxHealth);
         }
+
+        EnemyHealth enemyHealth = collision.GetComponent<EnemyHealth>();
+        if (enemyHealth == null)
+        {
+            enemyHealth = collision.GetComponentInParent<EnemyHealth>();
+        }
+
+        if (enemyHealth != null)
+        {
+            enemyHealth.TakeDamage(enemyHealth.maxHealth);
+        }
     }
 }
