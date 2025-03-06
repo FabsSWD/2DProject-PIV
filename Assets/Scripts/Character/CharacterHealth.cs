@@ -43,6 +43,12 @@ public class CharacterHealth : MonoBehaviour
         ApplyGameManagerValues();
     }
 
+    void Update()
+    {
+        GameManager.Instance.maxHealth = maxHealth;
+        GameManager.Instance.currentHealth = currentHealth;
+    }
+
     public void ApplyGameManagerValues()
     {
         if (GameManager.Instance != null)
@@ -102,5 +108,10 @@ public class CharacterHealth : MonoBehaviour
             combat.enabled = false;
         
         this.enabled = false;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
     }
 }

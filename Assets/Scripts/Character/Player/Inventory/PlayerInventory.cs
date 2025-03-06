@@ -12,6 +12,11 @@ public class PlayerInventory : MonoBehaviour
         ApplyGameManagerValues();
     }
 
+    void Update()
+    {
+        GameManager.Instance.coins = coins;
+    }
+
     public void ApplyGameManagerValues()
     {
         if (GameManager.Instance != null)

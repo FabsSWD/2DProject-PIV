@@ -47,6 +47,9 @@ public class PlayerMovement : CharacterMovement
 
     void Update()
     {
+        GameManager.Instance.moveSpeed = moveSpeed;
+        GameManager.Instance.maxJumps = maxJumps;
+
         if (isAttacking)
         {
             rb.velocity = Vector2.zero;

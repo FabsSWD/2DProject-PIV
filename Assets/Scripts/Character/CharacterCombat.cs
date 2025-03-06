@@ -22,6 +22,11 @@ public class CharacterCombat : MonoBehaviour
         characterMovement = GetComponent<CharacterMovement>();
     }
 
+    void Update()
+    {
+        GameManager.Instance.attackDamage = attackDamage;
+    } 
+
     public virtual void Attack()
     {
         if (characterMovement != null && characterMovement.isAttacking)

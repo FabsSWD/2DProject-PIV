@@ -50,6 +50,7 @@ public class SecondaryAbilityManager : MonoBehaviour
 
     void Update()
     {
+        GameManager.Instance.ability = ability;
         if (currentShieldCooldown > 0)
             currentShieldCooldown -= Time.deltaTime;
         if (Input.GetButtonDown("Fire2"))

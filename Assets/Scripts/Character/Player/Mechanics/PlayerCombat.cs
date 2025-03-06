@@ -14,7 +14,7 @@ public class PlayerCombat : CharacterCombat
     {
         if (GameManager.Instance != null)
         {
-            attackDamage = GameManager.Instance.attackDamage;
+            GameManager.Instance.attackDamage = attackDamage;
         }
     }
 
