@@ -6,9 +6,10 @@ public class CharacterCombat : MonoBehaviour
     [Header("Combat")]
     public float attackSpeed = 0.5f;
     public float attackRange = 0.5f;
-    public int attackDamage = 25;
+    public int attackDamage = 0;
     public Transform attackPoint;
     public LayerMask enemyLayers;
+    public float knockbackForce = 5f;
 
     protected Animator animator;
     protected Rigidbody2D rb;
@@ -48,16 +49,18 @@ public class CharacterCombat : MonoBehaviour
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D target in hitTargets)
         {
-            Debug.Log("Detected target: " + target.name);
             EnemyHealth health = target.GetComponentInParent<EnemyHealth>();
             if (health != null)
             {
-                Debug.Log("Applying damage to: " + target.name);
                 health.TakeDamage(attackDamage);
-            }
-            else
-            {
-                Debug.Log("No CharacterHealth found on: " + target.name);
+                Rigidbody2D enemyRb = target.GetComponent<Rigidbody2D>();
+                if (enemyRb == null)
+                    enemyRb = target.GetComponentInParent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    Vector2 knockbackDirection = (target.transform.position - transform.position).normalized;
+                    enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                }
             }
         }
     }

@@ -216,11 +216,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackSpeed: 0.5
   attackRange: 1
-  attackDamage: 25
+  attackDamage: 15
   attackPoint: {fileID: 6904732932623263298}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 520
+  knockbackForce: 25
 --- !u!114 &6904732931407173901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  damageCooldown: 0.75
 --- !u!114 &5064415032334335657
 MonoBehaviour:
   m_ObjectHideFlags: 0
