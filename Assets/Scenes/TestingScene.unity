@@ -1830,6 +1830,35 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!1 &1496524463 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6904732931407173891, guid: f8a42df3c9d10624e967445edc0bc9aa, type: 3}
+  m_PrefabInstance: {fileID: 6904732932122568055}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1496524474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496524463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac60a5fb6b7b9d6479e7f2a1f5f8ba60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 1
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  invulDuration: 1
+  shieldCooldown: 15
+  summonPrefab: {fileID: 0}
+  summonCooldown: 30
+  explosionPrefab: {fileID: 0}
+  explosionCooldown: 45
+  explosionDamage: 250
+  effectRadius: 5
 --- !u!1 &1591195401
 GameObject:
   m_ObjectHideFlags: 0

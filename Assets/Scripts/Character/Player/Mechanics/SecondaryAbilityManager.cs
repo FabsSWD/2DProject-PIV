@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public enum SecondaryAbility { None, Shield, SummonPrefab, Explosion }
+public enum SecondaryAbility { None, Shield, SummonPrefab }
 
 public class SecondaryAbilityManager : MonoBehaviour
 {
     public SecondaryAbility ability = SecondaryAbility.None;
-    public LayerMask affectedLayers;
     
     [Header("Shield Settings")]
     public float invulDuration = 1f;
@@ -15,12 +14,6 @@ public class SecondaryAbilityManager : MonoBehaviour
     [Header("Summon Settings")]
     public GameObject summonPrefab;
     public float summonCooldown = 30f;
-    
-    [Header("Explosion Settings")]
-    public GameObject explosionPrefab;
-    public float explosionCooldown = 45f;
-    public int explosionDamage = 250;
-    public float effectRadius = 5f;
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
@@ -28,7 +21,6 @@ public class SecondaryAbilityManager : MonoBehaviour
 
     private float currentShieldCooldown = 0f;
     private float currentSummonCooldown = 0f;
-    private float currentExplosionCooldown = 0f;
 
     void Start()
     {
@@ -45,8 +37,6 @@ public class SecondaryAbilityManager : MonoBehaviour
             currentShieldCooldown -= Time.deltaTime;
         if (currentSummonCooldown > 0)
             currentSummonCooldown -= Time.deltaTime;
-        if (currentExplosionCooldown > 0)
-            currentExplosionCooldown -= Time.deltaTime;
 
         if (Input.GetButtonDown("Fire2"))
         {
@@ -66,13 +56,6 @@ public class SecondaryAbilityManager : MonoBehaviour
                     {
                         Summon();
                         currentSummonCooldown = summonCooldown;
-                    }
-                    break;
-                case SecondaryAbility.Explosion:
-                    if (currentExplosionCooldown <= 0)
-                    {
-                        CastExplosion();
-                        currentExplosionCooldown = explosionCooldown;
                     }
                     break;
             }
@@ -100,31 +83,5 @@ public class SecondaryAbilityManager : MonoBehaviour
     {
         if (summonPrefab != null)
             Instantiate(summonPrefab, transform.position, Quaternion.identity);
-    }
-
-    void CastExplosion()
-    {
-        if (explosionPrefab != null)
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, effectRadius, affectedLayers);
-        foreach (Collider2D hit in hits)
-        {
-            if (hit.gameObject == gameObject)
-                continue;
-            
-            CharacterHealth health = hit.GetComponent<CharacterHealth>();
-            if (health == null)
-                health = hit.GetComponentInParent<CharacterHealth>();
-            
-            if (health != null)
-                health.TakeDamage(explosionDamage);
-        }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, effectRadius);
     }
 }
