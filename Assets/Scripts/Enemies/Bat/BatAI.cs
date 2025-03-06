@@ -22,18 +22,17 @@ public class BatAI : FlyingEnemyAI
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * moveSpeed * swoopSpeedMultiplier * Time.deltaTime;
-        rb.AddForce(force);
+        rb.velocity = direction * moveSpeed * swoopSpeedMultiplier;
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
             currentWaypoint++;
 
-        if (force.x >= 0.01f)
+        if (rb.velocity.x >= 0.01f)
             enemyGFX.localScale = new Vector3(1, 1, 1);
-        else if (force.x <= -0.01f)
+        else if (rb.velocity.x <= -0.01f)
             enemyGFX.localScale = new Vector3(-1, 1, 1);
-        
+
         float distanceToTarget = Vector2.Distance(rb.position, target.position);
         if (distanceToTarget <= stopDistance)
         {

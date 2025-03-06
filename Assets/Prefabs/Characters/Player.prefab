@@ -214,13 +214,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdcbbd78c98df904d8b42a7ecc34b079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  attackRange: 0.5
+  attackSpeed: 0.5
+  attackRange: 1
   attackDamage: 25
   attackPoint: {fileID: 6904732932623263298}
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 520
 --- !u!114 &6904732931407173901
 MonoBehaviour:
   m_ObjectHideFlags: 0

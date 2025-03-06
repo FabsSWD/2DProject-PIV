@@ -4,7 +4,7 @@ using Pathfinding;
 public class FlyingEnemyAI : MonoBehaviour
 {
     public Transform target;
-    public float moveSpeed = 5f;
+    public float moveSpeed = 3.5f;
     public float nextWaypointDistance = 3f;
     
     protected Transform enemyGFX;
@@ -20,6 +20,7 @@ public class FlyingEnemyAI : MonoBehaviour
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         
         if (enemyGFX == null)
             enemyGFX = transform;
@@ -58,8 +59,7 @@ public class FlyingEnemyAI : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = moveSpeed * Time.deltaTime * direction;
-        rb.AddForce(force);
+        rb.velocity = direction * moveSpeed;
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
@@ -67,9 +67,9 @@ public class FlyingEnemyAI : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (force.x >= 0.01f)
+        if (rb.velocity.x >= 0.01f)
             enemyGFX.localScale = new Vector3(1, 1, 1);
-        else if (force.x <= -0.01f)
+        else if (rb.velocity.x <= -0.01f)
             enemyGFX.localScale = new Vector3(-1, 1, 1);
     }
 }

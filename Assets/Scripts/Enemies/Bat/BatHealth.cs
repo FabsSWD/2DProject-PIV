@@ -9,5 +9,6 @@ public class BatHealth : EnemyHealth
     {
         base.Die();
         GetComponentInChildren<CircleCollider2D>().enabled = false;
+        GetComponentInChildren<CapsuleCollider2D>().enabled = false;
     }
 }
