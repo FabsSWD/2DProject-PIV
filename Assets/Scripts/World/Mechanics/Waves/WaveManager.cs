@@ -1,29 +1,38 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class WaveManager : MonoBehaviour {
+    [Header("Configuración de oleadas")]
     public int totalWaves = 5;
-    public int currentWave = 0;
     public int initialEnemyCount = 3;
     public int enemyIncrementPerWave = 2;
     public float preparationTime = 10f;
-    public int enemiesToSpawn;
-    public int enemiesRemaining;
-    public bool waveActive = false;
 
-    void Start() {
-        StartWave();
+    [Header("Estado de la oleada")]
+    public int currentWave = 0;
+    private int enemiesToSpawn;
+    private int enemiesRemaining;
+
+    public bool WaveActive {
+        get { return enemiesRemaining > 0; }
     }
 
-    public void StartWave() {
+    void Start() {
+        StartCoroutine(PrepareAndStartNextWave());
+    }
+
+    IEnumerator PrepareAndStartNextWave() {
+        yield return new WaitForSeconds(preparationTime);
+
         currentWave++;
         enemiesToSpawn = initialEnemyCount + (currentWave - 1) * enemyIncrementPerWave;
         enemiesRemaining = enemiesToSpawn;
-        waveActive = true;
+
+        Debug.Log("Oleada " + currentWave + " iniciada. Enemigos a spawnear: " + enemiesToSpawn);
     }
 
     public bool CanSpawnEnemy() {
-        return waveActive && enemiesToSpawn > 0;
+        return enemiesToSpawn > 0;
     }
 
     public void OnEnemySpawned() {
@@ -32,17 +41,16 @@ public class WaveManager : MonoBehaviour {
     }
 
     public void OnEnemyKilled() {
-        if (enemiesRemaining > 0)
-            enemiesRemaining--;
-        if (enemiesRemaining <= 0) {
-            waveActive = false;
-            if (currentWave < totalWaves)
-                StartCoroutine(PrepareNextWave());
-        }
-    }
+        enemiesRemaining--;
+        Debug.Log("Enemigo muerto. Restantes en la oleada: " + enemiesRemaining);
 
-    private IEnumerator PrepareNextWave() {
-        yield return new WaitForSeconds(preparationTime);
-        StartWave();
+        if (enemiesRemaining <= 0) {
+            Debug.Log("Oleada " + currentWave + " completada.");
+            if (currentWave < totalWaves) {
+                StartCoroutine(PrepareAndStartNextWave());
+            } else {
+                Debug.Log("¡Todas las oleadas completadas!");
+            }
+        }
     }
 }

@@ -13,12 +13,15 @@ public class EnemyHealth : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected Color originalColor;
 
+    private WaveManager waveManager;
+
     protected virtual void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
         coinDrop = GetComponent<EnemyCoinDrop>();
+        waveManager = FindObjectOfType<WaveManager>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (spriteRenderer != null)
             originalColor = spriteRenderer.color;
@@ -49,6 +52,10 @@ public class EnemyHealth : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Death");
+        
+        if (waveManager != null)
+            waveManager.OnEnemyKilled();
+        Destroy(gameObject);
         
         rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Static;
