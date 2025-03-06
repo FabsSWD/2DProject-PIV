@@ -32,7 +32,21 @@ public class SecondaryAbilityManager : MonoBehaviour
             originalColor = spriteRenderer.color;
         characterHealth = GetComponent<CharacterHealth>();
         currentFireballs = maxFireballs;
+        
+        if(GameManager.Instance != null)
+            ability = GameManager.Instance.ability;
+
+        ApplyGameManagerValues();
     }
+
+    public void ApplyGameManagerValues()
+    {
+        if (GameManager.Instance != null)
+        {
+            ability = GameManager.Instance.ability;
+        }
+    }
+
 
     void Update()
     {

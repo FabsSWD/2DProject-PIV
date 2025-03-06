@@ -32,6 +32,27 @@ public class CharacterHealth : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        if(GameManager.Instance != null)
+        {
+            maxHealth = GameManager.Instance.maxHealth;
+            currentHealth = GameManager.Instance.currentHealth;
+        }
+
+        ApplyGameManagerValues();
+    }
+
+    public void ApplyGameManagerValues()
+    {
+        if (GameManager.Instance != null)
+        {
+            maxHealth = GameManager.Instance.maxHealth;
+            currentHealth = GameManager.Instance.currentHealth;
+        }
+    }
+
+
     public virtual void TakeDamage(int damage)
     {
         if (isInvulnerable)

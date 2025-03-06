@@ -18,31 +18,44 @@ public class PlayerMovement : CharacterMovement
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        if(GameManager.Instance != null)
+        {
+            moveSpeed = GameManager.Instance.moveSpeed;
+            maxJumps = GameManager.Instance.maxJumps;
+        }
+        ApplyGameManagerValues();
     }
+
+    public void ApplyGameManagerValues()
+    {
+        if (GameManager.Instance != null)
+        {
+            moveSpeed = GameManager.Instance.moveSpeed;
+            maxJumps = GameManager.Instance.maxJumps;
+        }
+    }
+
 
     void Update()
     {
-        // Attack Lock
         if (isAttacking)
         {
             rb.velocity = Vector2.zero;
             return;
         }
 
-        // Jump
         if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("Jump");
             jumpCount++;
         }
-        // Better Jump
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpReleaseMultiplier);
         }
 
-        // Horizontal Movement
         HandleMovement();
     }
 
