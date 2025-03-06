@@ -222,7 +222,7 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 520
-  knockbackForce: 25
+  knockbackForce: 5
 --- !u!114 &6904732931407173901
 MonoBehaviour:
   m_ObjectHideFlags: 0
