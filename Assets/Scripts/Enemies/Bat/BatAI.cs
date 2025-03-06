@@ -4,6 +4,7 @@ using Pathfinding;
 public class BatAI : FlyingEnemyAI
 {
     public float swoopSpeedMultiplier = 1.5f;
+    public float stopDistance = 0.5f;
     
     protected override void FixedUpdate()
     {
@@ -32,5 +33,12 @@ public class BatAI : FlyingEnemyAI
             enemyGFX.localScale = new Vector3(1, 1, 1);
         else if (force.x <= -0.01f)
             enemyGFX.localScale = new Vector3(-1, 1, 1);
+        
+        float distanceToTarget = Vector2.Distance(rb.position, target.position);
+        if (distanceToTarget <= stopDistance)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            return;
+        }
     }
 }

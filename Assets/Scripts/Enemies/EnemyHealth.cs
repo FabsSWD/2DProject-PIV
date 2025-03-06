@@ -5,7 +5,6 @@ public class EnemyHealth : MonoBehaviour
     [Header("Health")]
     public int maxHealth = 50;
     protected int currentHealth;
-
     protected Animator animator;
     protected Rigidbody2D rb;
     protected new Collider2D collider2D;
@@ -27,9 +26,7 @@ public class EnemyHealth : MonoBehaviour
             animator.SetTrigger("Hurt");
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     protected virtual void Die()
@@ -45,12 +42,19 @@ public class EnemyHealth : MonoBehaviour
         EnemyCombat combat = GetComponent<EnemyCombat>();
         if (combat != null)
             combat.enabled = false;
+
+        FlyingEnemyAI flyingAI = GetComponent<FlyingEnemyAI>();
+        if (flyingAI != null)
+            flyingAI.enabled = false;
         
         if (coinDrop != null)
             coinDrop.DropCoins(transform);
         
-        this.enabled = false;
+        Destroy(gameObject, 1f);
+    }
 
-        Destroy(gameObject, 45f);
+    public virtual void OnDeathAnimationEnd()
+    {
+        Destroy(gameObject);
     }
 }

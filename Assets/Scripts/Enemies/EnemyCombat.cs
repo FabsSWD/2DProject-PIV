@@ -12,7 +12,7 @@ public class EnemyCombat : MonoBehaviour
 
     protected Animator animator;
     protected Rigidbody2D rb;
-    protected bool isAttacking = false;
+    public bool isAttacking = false;
 
     protected virtual void Awake()
     {
