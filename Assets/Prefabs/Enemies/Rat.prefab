@@ -245,8 +245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinPrefab: {fileID: 294021516948677814, guid: 49e6ee33250214a9facc214f3a2fecb7, type: 3}
   lootDrop: {fileID: 3565799467409635064}
-  minCoins: 1
-  maxCoins: 3
+  minCoins: 2
+  maxCoins: 5
   horizontalForceMin: -0.5
   horizontalForceMax: 0.5
   verticalForceMin: 0.1
@@ -312,8 +312,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3bfc71fb2a637a4c8650b1b77cb32c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 75
   coinDrop: {fileID: 3565799468766173956}
+  isInvulnerable: 0
 --- !u!58 &3565799468766173958
 CircleCollider2D:
   m_ObjectHideFlags: 0
