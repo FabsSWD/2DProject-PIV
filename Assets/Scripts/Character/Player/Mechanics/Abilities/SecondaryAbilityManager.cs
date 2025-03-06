@@ -12,32 +12,32 @@ public class SecondaryAbilityManager : MonoBehaviour
     public float shieldCooldown = 15f;
     
     [Header("Summon Settings")]
-    public GameObject summonPrefab;
+    public GameObject summonFireball;
     public float summonCooldown = 30f;
+    public int maxFireballs = 3;
+    public float fireballRechargeTime = 40f;
+    public Transform AttackPoint;
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private CharacterHealth characterHealth;
-
     private float currentShieldCooldown = 0f;
-    private float currentSummonCooldown = 0f;
+    private int currentFireballs;
+    private bool isRechargingFireball = false;
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
             originalColor = spriteRenderer.color;
-        
         characterHealth = GetComponent<CharacterHealth>();
+        currentFireballs = maxFireballs;
     }
 
     void Update()
     {
         if (currentShieldCooldown > 0)
             currentShieldCooldown -= Time.deltaTime;
-        if (currentSummonCooldown > 0)
-            currentSummonCooldown -= Time.deltaTime;
-
         if (Input.GetButtonDown("Fire2"))
         {
             switch (ability)
@@ -52,10 +52,12 @@ public class SecondaryAbilityManager : MonoBehaviour
                     }
                     break;
                 case SecondaryAbility.SummonPrefab:
-                    if (currentSummonCooldown <= 0)
+                    if (currentFireballs > 0)
                     {
                         Summon();
-                        currentSummonCooldown = summonCooldown;
+                        currentFireballs--;
+                        if (!isRechargingFireball)
+                            StartCoroutine(RechargeFireball());
                     }
                     break;
             }
@@ -66,22 +68,30 @@ public class SecondaryAbilityManager : MonoBehaviour
     {
         if (characterHealth != null)
             characterHealth.isInvulnerable = true;
-        
         if (spriteRenderer != null)
             spriteRenderer.color = Color.blue;
-        
         yield return new WaitForSeconds(invulDuration);
-        
         if (spriteRenderer != null)
             spriteRenderer.color = originalColor;
-        
         if (characterHealth != null)
             characterHealth.isInvulnerable = false;
     }
 
     void Summon()
     {
-        if (summonPrefab != null)
-            Instantiate(summonPrefab, transform.position, Quaternion.identity);
+        if (summonFireball != null && AttackPoint != null)
+            Instantiate(summonFireball, AttackPoint.position, Quaternion.identity);
+    }
+
+    IEnumerator RechargeFireball()
+    {
+        isRechargingFireball = true;
+        yield return new WaitForSeconds(fireballRechargeTime);
+        if (currentFireballs < maxFireballs)
+            currentFireballs++;
+        if (currentFireballs < maxFireballs)
+            StartCoroutine(RechargeFireball());
+        else
+            isRechargingFireball = false;
     }
 }

@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 6904732931407173901}
   - component: {fileID: 6904732931407173898}
   - component: {fileID: 5064415032334335657}
+  - component: {fileID: 6227590814872104243}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -248,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   damageCooldown: 0.75
+  isInvulnerable: 0
 --- !u!114 &5064415032334335657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +263,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coins: 0
+--- !u!114 &6227590814872104243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6904732931407173891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac60a5fb6b7b9d6479e7f2a1f5f8ba60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: 0
+  invulDuration: 1
+  shieldCooldown: 15
+  summonFireball: {fileID: 6052833196111949274, guid: 893448081c1bab84491d3aa0a7c3c9e0, type: 3}
+  summonCooldown: 1.5
+  maxFireballs: 3
+  fireballRechargeTime: 30
+  AttackPoint: {fileID: 6904732932623263298}
 --- !u!1 &6904732932494441167
 GameObject:
   m_ObjectHideFlags: 0
